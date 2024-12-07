@@ -4,10 +4,6 @@ import org.eclipse.californium.core.CoapResource;
 import org.eclipse.californium.core.CoapServer;
 import org.eclipse.californium.core.server.resources.CoapExchange;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.lang.management.ManagementFactory;
-import java.lang.management.OperatingSystemMXBean;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -18,7 +14,6 @@ import java.util.List;
 
 public class CoAPServer extends CoapServer {
 
-    private final List<Long> sensorValuesMeasurement = new ArrayList<>();
     public static List<String> resourceList = new ArrayList<>(Arrays.asList("/time", "/temperature"));
 
     public CoAPServer() {
@@ -27,7 +22,7 @@ public class CoAPServer extends CoapServer {
         add(new WeatherResource()); // Adding CPU Temperature Resource
     }
 
-    private class TimeResource extends CoapResource {
+    private static class TimeResource extends CoapResource {
         public TimeResource() {
             super("time");
             getAttributes().setTitle("Time Resource");
@@ -41,7 +36,7 @@ public class CoAPServer extends CoapServer {
         }
     }
 
-    private class WeatherResource extends CoapResource {
+    private static class WeatherResource extends CoapResource {
         public WeatherResource() {
             super("temperature");
             getAttributes().setTitle("Mock Temperature Resource");
