@@ -1,6 +1,7 @@
 package com.combinediot.revisitiot.InterfaceProgram;
 
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
@@ -25,6 +26,13 @@ public class Main extends Application {
 			primaryStage.setTitle("FontEndMqttClient");
 			primaryStage.setResizable(false);
 			primaryStage.setScene(scene);
+
+			// Handle window close event
+			primaryStage.setOnCloseRequest(event -> {
+				Platform.exit(); // Gracefully exit the JavaFX runtime
+				System.exit(0); // Forcefully exit the entire application
+			});
+
 			primaryStage.show();
 
 		} catch(Exception e) {

@@ -12,7 +12,7 @@ public class GatewayProg{
 		 
 	public static void main(String[] args) {
 	
-		new Gateway("rand");
+		new Gateway("temperature");
 		new Gateway("time");
 	}
 }
