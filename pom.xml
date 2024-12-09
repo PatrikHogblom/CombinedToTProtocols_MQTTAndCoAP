@@ -11,7 +11,7 @@
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-<junit.version>5.10.2</junit.version>  </properties>
+  </properties>
 
   <dependencies>
     <dependency>
@@ -25,10 +25,19 @@
       <version>22.0.1</version>
     </dependency>
 
+    <!-- JUnit 5 -->
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter</artifactId>
-      <version>${junit.version}</version>
+      <version>5.10.2</version>
+      <scope>test</scope>
+    </dependency>
+
+    <!-- Mockito -->
+    <dependency>
+      <groupId>org.mockito</groupId>
+      <artifactId>mockito-core</artifactId>
+      <version>5.5.0</version>
       <scope>test</scope>
     </dependency>
 
@@ -40,12 +49,19 @@
       </dependency>
 
 
-      <dependency>
+<!--      <dependency>-->
+<!--      <groupId>org.eclipse.californium</groupId>-->
+<!--      <artifactId>californium-core</artifactId>-->
+<!--      <version>2.0.0-M12</version>-->
+<!--    </dependency>-->
+
+    <!-- https://mvnrepository.com/artifact/org.eclipse.californium/californium-core -->
+    <!-- https://mvnrepository.com/artifact/org.eclipse.californium/californium-core -->
+    <dependency>
       <groupId>org.eclipse.californium</groupId>
       <artifactId>californium-core</artifactId>
-      <version>2.0.0-M9</version> <!-- Use the latest stable version -->
+      <version>3.0.0-M4</version>
     </dependency>
-
     <!-- JSON -->
     <dependency>
       <groupId>org.json</groupId>
@@ -80,6 +96,14 @@
           <target>22</target>
         </configuration>
       </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <version>3.2.5</version>
+      </plugin>
+
+
       <plugin>
         <groupId>org.openjfx</groupId>
         <artifactId>javafx-maven-plugin</artifactId>
@@ -91,7 +115,6 @@
               <configuration>
                   <mainClass>com.combinediot.revisitiot.InterfaceProgram.Main</mainClass> <!-- Correct path -->
               </configuration>
-
           </execution>
         </executions>
       </plugin>

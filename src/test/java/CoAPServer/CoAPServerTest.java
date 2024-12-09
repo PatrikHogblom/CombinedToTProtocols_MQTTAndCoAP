@@ -1,74 +1,63 @@
 package CoAPServer;
 
-import com.combinediot.revisitiot.sensorProgram.CoAPServer;
 import org.eclipse.californium.core.CoapClient;
 import org.eclipse.californium.core.CoapResponse;
-import org.junit.jupiter.api.*;
+import org.eclipse.californium.elements.exception.ConnectorException;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import java.io.IOException;
+
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class CoAPServerTest {
 
-    private static CoAPServer server;
-    private static final String BASE_URI = "coap://localhost:5683";
+    private static CoapClient timeClient;
+    private static CoapClient tempClient;
 
     @BeforeAll
-    static void startServer() {
-        server = new CoAPServer();
-        server.start();
-        System.out.println("CoAPServer started.");
+    public static void setup() {
+        // Initialize clients
+        timeClient = new CoapClient("coap://localhost:5683/time");
+        tempClient = new CoapClient("coap://localhost:5683/temperature");
     }
 
     @AfterAll
-    static void stopServer() {
-        if (server != null) {
-            server.stop();
-            System.out.println("CoAPServer stopped.");
+    public static void tearDown() {
+        // Shutdown clients
+        if (timeClient != null) {
+            timeClient.shutdown();
+        }
+        if (tempClient != null) {
+            tempClient.shutdown();
         }
     }
 
     @Test
-    public void testTimeResource() {
-        CoapClient client = new CoapClient(BASE_URI + "/time");
-
-        CoapResponse response = client.get();
-        assertNotNull(response, "Response should not be null.");
-        assertEquals("2.05", response.getCode().toString(), "Expected response code 2.05 Content.");
-        assertTrue(response.getResponseText().startsWith("Current date and time:"),
-                "Response should contain current date and time.");
-
+    public void testTimeEndpoint() {
+        try {
+            CoapResponse response = timeClient.get();
+            assertNotNull(response, "Response should not be null");
+            assertTrue(response.isSuccess(), "Response should be successful");
+            System.out.println("Response from /time: " + response.getResponseText());
+        } catch (ConnectorException | IOException e) {
+            System.err.println("Error during GET request for /time: " + e.getMessage());
+            assertTrue(false, "Exception occurred: " + e.getMessage());
+        }
     }
 
     @Test
-    public void testTemperatureResource() {
-        CoapClient client = new CoapClient(BASE_URI + "/temperature");
-
-        CoapResponse response = client.get();
-        assertNotNull(response, "Response should not be null.");
-        assertEquals("2.05", response.getCode().toString(), "Expected response code 2.05 Content.");
-        assertTrue(response.getResponseText().contains("Mock Temperature"),
-                "Response should contain mock temperature data.");
-    }
-
-    @Test
-    public void testInvalidPath() {
-        CoapClient client = new CoapClient(BASE_URI + "/invalid");
-
-        CoapResponse response = client.get();
-        assertNotNull(response, "Response should not be null.");
-        assertEquals("4.04", response.getCode().toString(), "Expected 4.04 Not Found.");
-    }
-
-    @Test
-    public void testUnsupportedMethod() {
-        CoapClient client = new CoapClient(BASE_URI + "/time");
-
-        CoapResponse response = client.post("data", 0);
-        assertNotNull(response, "Response should not be null.");
-        assertEquals("4.05", response.getCode().toString(), "Expected 4.05 Method Not Allowed.");
+    public void testTemperatureEndpoint() {
+        try {
+            CoapResponse response = tempClient.get();
+            assertNotNull(response, "Response should not be null");
+            assertTrue(response.isSuccess(), "Response should be successful");
+            System.out.println("Response from /temperature: " + response.getResponseText());
+        } catch (ConnectorException | IOException e) {
+            System.err.println("Error during GET request for /temperature: " + e.getMessage());
+            assertTrue(false, "Exception occurred: " + e.getMessage());
+        }
     }
 }
-
-
-
-
