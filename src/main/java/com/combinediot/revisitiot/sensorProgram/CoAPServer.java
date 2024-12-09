@@ -2,8 +2,10 @@ package com.combinediot.revisitiot.sensorProgram;
 
 import org.eclipse.californium.core.CoapResource;
 import org.eclipse.californium.core.CoapServer;
+import org.eclipse.californium.core.network.CoapEndpoint;
 import org.eclipse.californium.core.server.resources.CoapExchange;
 
+import java.net.InetSocketAddress;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -18,8 +20,13 @@ public class CoAPServer extends CoapServer {
 
     public CoAPServer() {
         System.out.println("Starting CoAP Server...");
-        add(new TimeResource());
-        add(new WeatherResource()); // Adding CPU Temperature Resource
+
+        CoapEndpoint.Builder endpointBuilder = new CoapEndpoint.Builder();
+        endpointBuilder.setInetSocketAddress(new InetSocketAddress("127.0.0.1", 5683));
+        this.addEndpoint(endpointBuilder.build());
+
+        this.add(new TimeResource());
+        this.add(new WeatherResource()); // Adding CPU Temperature Resource
     }
 
     private static class TimeResource extends CoapResource {
