@@ -1,8 +1,8 @@
 # CombinedToTProtocols_MQTTAndCoAP
-A project about combining Internet of THings Protocols CoAP and MQTT through a gateway. 
+A project about combining Internet of Things Protocols CoAP and MQTT through a gateway. 
 
 # Technologies
-Java, maven, CI/CD, json, paho, californium, Github, Git, Scenebuilder, JavaFX  
+Java, maven, json, paho, californium, Github, Git, Scenebuilder, JavaFX  
 
 ## How to run this code
 - step 1: run the CoAPServer file in "src/main/java/com/combinediot/revisitiot/sensorProgram/CoAPServerAPP.java"
